@@ -80,15 +80,10 @@ export function RegularTasks() {
   const [isReflecting, setIsReflecting] = useState(false);
   const [showReflectionModal, setShowReflectionModal] = useState(false);
 
-  useEffect(() => {
-    fetchUser();
-    fetchTasks();
-    const interval = setInterval(() => {
-      fetchUser();
-      fetchTasks();
-    }, 30000);
-    return () => clearInterval(interval);
-  }, [fetchUser, fetchTasks]);
+  // Image Viewer Modal
+  const [viewingImage, setViewingImage] = useState(null);
+
+
 
   const handleDecisionSubmit = async (e) => {
     e.preventDefault();
@@ -222,6 +217,16 @@ export function RegularTasks() {
     }
   }, []);
 
+  useEffect(() => {
+    fetchUser();
+    fetchTasks();
+    const interval = setInterval(() => {
+      fetchUser();
+      fetchTasks();
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [fetchUser, fetchTasks]);
+
   const startCamera = async () => {
     setShowCameraModal(true);
     try {
@@ -242,21 +247,52 @@ export function RegularTasks() {
     setShowCameraModal(false);
   };
 
-  const captureCameraImage = () => {
+  const compressImage = (fileOrDataUrl) => {
+    return new Promise((resolve) => {
+      const img = new window.Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        const MAX_DIMENSION = 1200;
+        if (width > height && width > MAX_DIMENSION) {
+          height *= MAX_DIMENSION / width;
+          width = MAX_DIMENSION;
+        } else if (height > MAX_DIMENSION) {
+          width *= MAX_DIMENSION / height;
+          height = MAX_DIMENSION;
+        }
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', 0.6));
+      };
+      if (typeof fileOrDataUrl === 'string') {
+        img.src = fileOrDataUrl;
+      } else {
+        const reader = new FileReader();
+        reader.onload = (e) => img.src = e.target.result;
+        reader.readAsDataURL(fileOrDataUrl);
+      }
+    });
+  };
+
+  const captureCameraImage = async () => {
     if (!videoRef.current || !canvasRef.current) return;
     const canvas = canvasRef.current;
     const video = videoRef.current;
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     canvas.getContext('2d').drawImage(video, 0, 0);
-    const dataUrl = canvas.toDataURL('image/png');
-    processOcrImage(dataUrl);
+    const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
     stopCamera();
+    const compressed = await compressImage(dataUrl);
+    processOcrImage(compressed);
   };
 
   const processOcrImage = async (dataUrl) => {
     setIsOcrLoading(true);
-    const toastId = toast.loading("Analyzing bill image...");
+    const toastId = toast.loading("Analyzing image...");
     try {
       const res = await fetch('/api/ai/ocr', {
         method: 'POST',
@@ -265,30 +301,31 @@ export function RegularTasks() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to process image");
+      
       const createRes = await fetch('/api/regular-tasks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          title: data.title,
-          category: data.category || "Finance",
-          financeDetails: { isFinanceTask: true, amount: data.amount, paymentStatus: 'pending' },
-          dueDate: data.dueDate,
+          title: data.title || "Image Upload",
+          category: data.category || "Personal",
+          financeDetails: { isFinanceTask: data.amount != null, amount: data.amount || 0, paymentStatus: 'pending' },
+          dueDate: data.dueDate || null,
           attachments: [{
-            name: `Bill_${new Date().getTime()}.png`,
+            name: `Image_${new Date().getTime()}.jpg`,
             url: dataUrl,
-            type: 'image/png',
+            type: 'image/jpeg',
             size: dataUrl.length
           }],
-          note: `Captured from camera. Merchant: ${data.merchant || 'unknown'}.`
+          note: data.note || (data.merchant ? `Merchant: ${data.merchant}` : "Captured image")
         })
       });
       const taskData = await createRes.json();
       if (taskData.task) {
         setTasks([taskData.task, ...tasks]);
-        toast.success("Bill added successfully!", { id: toastId });
+        toast.success("Image processed and task added!", { id: toastId });
       }
     } catch (err) {
-      toast.error("Failed to process bill: " + err.message, { id: toastId });
+      toast.error("Failed to process image: " + err.message, { id: toastId });
     } finally {
       setIsOcrLoading(false);
     }
@@ -297,9 +334,8 @@ export function RegularTasks() {
   const handleOcrUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => processOcrImage(reader.result);
+    const compressed = await compressImage(file);
+    processOcrImage(compressed);
   };
 
   const handleCalendarSync = (task) => {
@@ -720,7 +756,7 @@ export function RegularTasks() {
             <input ref={galleryInputRef} type="file" accept="image/*" className="hidden" onChange={handleOcrUpload} />
           </header>
 
-          <main className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+          <main className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
 
             {viewMode === 'dashboard' ? (
               <FinanceDashboard tasks={tasks} onAnalyze={() => fetchAiAnalysis('finance')} isAnalyzing={isAnalyzing} aiAnalysis={aiAnalysis} />
@@ -756,7 +792,7 @@ export function RegularTasks() {
                     placeholder="What's on your mind? Press Enter to add..."
                     value={newTaskTitle}
                     onChange={(e) => setNewTaskTitle(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm outline-none focus:border-indigo-500/40 focus:ring-8 focus:ring-indigo-500/5 transition-all text-white placeholder:text-slate-600"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl pl-4 pr-24 sm:pl-6 sm:pr-28 py-4 text-sm outline-none focus:border-indigo-500/40 focus:ring-8 focus:ring-indigo-500/5 transition-all text-white placeholder:text-slate-600"
                   />
                   <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
                     <button
@@ -841,7 +877,7 @@ export function RegularTasks() {
                                     )}>
                                       {task.title}
                                     </h3>
-                                    <div className="flex items-center gap-3 mt-1.5">
+                                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-1.5">
                                       <span className={cn(
                                         "text-[10px] font-bold px-2 py-0.5 rounded border uppercase tracking-wider",
                                         PRIORITIES.find(p => p.id === task.priority)?.color
@@ -936,7 +972,7 @@ export function RegularTasks() {
                                     )}>
                                       {task.title}
                                     </h3>
-                                    <div className="flex items-center gap-3 mt-1.5">
+                                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-1.5">
                                       <span className={cn(
                                         "text-[10px] font-bold px-2 py-0.5 rounded border uppercase tracking-wider",
                                         PRIORITIES.find(p => p.id === task.priority)?.color
@@ -1023,7 +1059,7 @@ export function RegularTasks() {
                   animate={{ x: 0 }}
                   exit={{ x: "100%" }}
                   transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                  className="fixed right-0 top-0 bottom-0 w-full max-w-lg bg-[#0a0a0f] border-l border-white/10 z-[70] p-10 flex flex-col shadow-2xl"
+                  className="fixed right-0 top-0 bottom-0 w-full max-w-lg bg-[#0a0a0f] border-l border-white/10 z-[70] p-5 md:p-10 flex flex-col shadow-2xl"
                 >
                   <div className="flex items-center justify-between mb-10">
                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400">Task Details</span>
@@ -1060,7 +1096,7 @@ export function RegularTasks() {
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                       <div className="space-y-2">
                         <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Priority</p>
                         <select
@@ -1411,11 +1447,11 @@ export function RegularTasks() {
                             )}
                             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                               <button
-                                onClick={() => window.open(file.url, '_blank')}
+                                onClick={() => setViewingImage(file.url)}
                                 className="p-2 bg-white/10 hover:bg-white/20 rounded-lg text-white transition-all"
-                                title="Open"
+                                title="View Image"
                               >
-                                <ExternalLink size={14} />
+                                <Eye size={14} />
                               </button>
                               <button
                                 onClick={async () => {
@@ -1732,6 +1768,41 @@ export function RegularTasks() {
               </div>
             )}
           </AnimatePresence>
+
+          {/* IMAGE VIEWER MODAL */}
+          <AnimatePresence>
+            {viewingImage && (
+              <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setViewingImage(null)}
+                  className="absolute inset-0 bg-black/90 backdrop-blur-xl cursor-zoom-out"
+                />
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  className="relative z-10 max-w-5xl w-full max-h-[90vh] flex flex-col items-center justify-center"
+                >
+                  <button
+                    onClick={() => setViewingImage(null)}
+                    className="absolute -top-12 right-0 p-2 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md transition-all z-50 hover:scale-110"
+                    title="Close Image"
+                  >
+                    <X size={24} />
+                  </button>
+                  <img 
+                    src={viewingImage} 
+                    alt="Attachment Fullscreen" 
+                    className="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10 bg-black/50" 
+                  />
+                </motion.div>
+              </div>
+            )}
+          </AnimatePresence>
+
         </div>
       </>
     </div>

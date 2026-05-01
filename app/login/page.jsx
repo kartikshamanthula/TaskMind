@@ -24,16 +24,19 @@ export default function LoginPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Login failed");
+      
       toast.success("Welcome back!");
+      
+      // Perform a hard navigation to bypass Next.js cache and ensure a clean state
       if (data.user?.role === "admin") {
-        router.push("/admin");
+        window.location.href = "/admin";
       } else {
-        router.push("/board");
+        window.location.href = "/board";
       }
-      router.refresh();
+      // Return early so we don't set isLoading(false), keeping the spinner active while page loads
+      return;
     } catch (err) {
       toast.error(err.message);
-    } finally {
       setIsLoading(false);
     }
   };

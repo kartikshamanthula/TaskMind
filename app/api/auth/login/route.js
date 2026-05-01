@@ -31,11 +31,17 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 400 });
     }
 
-    // Update lastLogin and set isOnline
-    user.lastLogin = new Date();
-    user.isOnline = true;
-    user.lastHeartbeat = new Date();
-    await user.save();
+    // Update lastLogin and set isOnline using updateOne for better performance
+    await User.updateOne(
+      { _id: user._id },
+      { 
+        $set: { 
+          lastLogin: new Date(),
+          isOnline: true,
+          lastHeartbeat: new Date()
+        } 
+      }
+    );
 
     const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
