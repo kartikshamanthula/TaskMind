@@ -73,6 +73,7 @@ export function RegularTasks() {
   const [aiCoachTab, setAiCoachTab] = useState("analysis"); // 'analysis' or 'decision'
   const [decisionQuery, setDecisionQuery] = useState("");
   const [isDecisionLoading, setIsDecisionLoading] = useState(false);
+  const [decisionResult, setDecisionResult] = useState(null);
 
   // Reflection Report
   const [reflectionReport, setReflectionReport] = useState(null);

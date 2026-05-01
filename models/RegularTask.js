@@ -36,12 +36,12 @@ const RegularTaskSchema = new mongoose.Schema({
     default: []
   },
   order: { type: Number, default: 0 },
-  userId: { type: String, required: true },
+  userId: { type: String, required: true, index: true },
   attachments: {
     type: [{
       name: String,
       url: String,
-      type: String,
+      type: { type: String },
       size: Number,
       createdAt: { type: Date, default: Date.now }
     }],

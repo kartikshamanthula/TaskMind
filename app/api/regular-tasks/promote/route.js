@@ -7,21 +7,29 @@ import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 
 const getUser = async () => {
-  const token = (await cookies()).get('token')?.value;
-  if (!token) return null;
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
+    if (!token) return null;
+    
+    if (!process.env.JWT_SECRET) {
+      console.error('JWT_SECRET is not defined');
+      return null;
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     return decoded;
   } catch (e) {
+    console.error('Auth error:', e.message);
     return null;
   }
 };
 
 export async function POST(request) {
-  await dbConnect();
   try {
+    await dbConnect();
     const user = await getUser();
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!user || !user.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const { id } = await request.json();
     if (!id) return NextResponse.json({ error: 'Task ID is required' }, { status: 400 });
@@ -61,6 +69,7 @@ export async function POST(request) {
     });
 
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error('Promote Task Error:', error);
+    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
   }
 }
