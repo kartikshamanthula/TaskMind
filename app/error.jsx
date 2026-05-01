@@ -27,7 +27,7 @@ export default function ErrorBoundary({ error, reset }) {
         
         <h1 className="text-3xl font-black text-white mb-3 tracking-tight">System Error</h1>
         <p className="text-slate-400 mb-8 text-sm leading-relaxed">
-          Our servers encountered an unexpected exception while processing your request. Don't worry, your data is safe.
+          Our servers encountered an unexpected exception while processing your request. Don&apos;t worry, your data is safe.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

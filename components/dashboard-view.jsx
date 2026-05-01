@@ -59,7 +59,7 @@ export function DashboardView({ tasks, columns }) {
     <div className="h-full flex flex-col p-6 overflow-y-auto custom-scrollbar">
       <div className="mb-8">
         <h2 className="text-2xl font-bold mb-2">Workspace Analytics</h2>
-        <p className="text-muted-foreground">Here is a high-level overview of your team's productivity and task distribution.</p>
+        <p className="text-muted-foreground">Here is a high-level overview of your team&apos;s productivity and task distribution.</p>
       </div>
 
       {/* Stats Cards */}

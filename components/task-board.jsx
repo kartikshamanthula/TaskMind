@@ -2792,7 +2792,7 @@ export function TaskBoard() {
                   <Lightbulb className="text-purple-500 shrink-0" size={24} />
                   <div>
                     <p className="text-sm font-bold text-purple-600 uppercase tracking-widest mb-1">AI Recommendation</p>
-                    <p className="text-muted-foreground leading-relaxed italic">"{aiAnalysis.summary}"</p>
+                    <p className="text-muted-foreground leading-relaxed italic">&quot;{aiAnalysis.summary}&quot;</p>
                   </div>
                 </div>
 

@@ -193,7 +193,7 @@ export function LandingPage() {
       <section id="features" className="relative z-10 max-w-7xl mx-auto px-6 pb-32 pt-16">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black text-white mb-6">Everything you need to <span className="text-indigo-400">scale</span></h2>
-          <p className="text-slate-400 max-w-2xl mx-auto text-lg">We've combined the best parts of project management with cutting-edge AI.</p>
+          <p className="text-slate-400 max-w-2xl mx-auto text-lg">We&apos;ve combined the best parts of project management with cutting-edge AI.</p>
         </div>
 
         <motion.div

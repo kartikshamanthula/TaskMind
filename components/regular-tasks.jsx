@@ -81,9 +81,14 @@ export function RegularTasks() {
   const [showReflectionModal, setShowReflectionModal] = useState(false);
 
   useEffect(() => {
-    fetchTasks();
     fetchUser();
-  }, []);
+    fetchTasks();
+    const interval = setInterval(() => {
+      fetchUser();
+      fetchTasks();
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [fetchUser, fetchTasks]);
 
   const handleDecisionSubmit = async (e) => {
     e.preventDefault();
@@ -152,7 +157,7 @@ export function RegularTasks() {
     }
   };
 
-  const fetchUser = async () => {
+  const fetchUser = React.useCallback(async () => {
     try {
       const res = await fetch('/api/auth/me');
       const data = await res.json();
@@ -163,7 +168,7 @@ export function RegularTasks() {
       }
       else router.push('/login');
     } catch (err) { console.error(err); }
-  };
+  }, [router]);
 
   const handleVoiceInput = () => {
     if (!('webkitSpeechRecognition' in window)) {
@@ -205,7 +210,7 @@ export function RegularTasks() {
     recognition.start();
   };
 
-  const fetchTasks = async () => {
+  const fetchTasks = React.useCallback(async () => {
     try {
       const res = await fetch('/api/regular-tasks');
       const data = await res.json();
@@ -215,7 +220,7 @@ export function RegularTasks() {
       toast.error("Failed to fetch tasks");
       setLoading(false);
     }
-  };
+  }, []);
 
   const startCamera = async () => {
     setShowCameraModal(true);
