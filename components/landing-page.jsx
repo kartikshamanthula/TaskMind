@@ -14,9 +14,16 @@ import logoImg from "../public/landing.png";
 export function LandingPage() {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     setMounted(true);
+    fetch('/api/auth/me')
+      .then(res => res.ok ? res.json() : { user: null })
+      .then(data => {
+        if (data && data.user) setUser(data.user);
+      })
+      .catch(err => console.error(err));
   }, []);
 
   const { scrollY } = useScroll();
@@ -96,14 +103,24 @@ export function LandingPage() {
             <a href="#workflow" className="hover:text-white transition-colors">Workflow</a>
           </div>
           <div className="flex items-center gap-4 border-l border-white/10 pl-6 ml-2">
-            <Link href="/login" className="text-sm font-semibold hover:text-white transition-colors">
-              Sign In
-            </Link>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link href="/register" className="px-5 py-2.5 bg-white text-black rounded-full text-sm font-bold hover:bg-slate-200 transition-colors shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)]">
-                Get Started
-              </Link>
-            </motion.div>
+            {user ? (
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link href="/board" className="px-5 py-2.5 bg-indigo-600 text-white rounded-full text-sm font-bold hover:bg-indigo-500 transition-colors shadow-[0_0_20px_-5px_rgba(79,70,229,0.5)]">
+                  Dashboard
+                </Link>
+              </motion.div>
+            ) : (
+              <>
+                <Link href="/login" className="text-sm font-semibold hover:text-white transition-colors">
+                  Sign In
+                </Link>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Link href="/register" className="px-5 py-2.5 bg-white text-black rounded-full text-sm font-bold hover:bg-slate-200 transition-colors shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)]">
+                    Get Started
+                  </Link>
+                </motion.div>
+              </>
+            )}
           </div>
         </div>
       </motion.header>
@@ -366,9 +383,15 @@ export function LandingPage() {
           <h2 className="text-4xl md:text-5xl font-black text-white mb-6 relative z-10">Ready to transform your workflow?</h2>
           <p className="text-indigo-100 mb-10 text-lg max-w-2xl mx-auto relative z-10">Join thousands of high performers who have already switched to TaskMind.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
-            <button onClick={() => router.push('/register')} className="px-8 py-4 bg-white text-indigo-600 font-bold rounded-full hover:scale-105 transition-transform shadow-xl">
-              Create Free Account
-            </button>
+            {user ? (
+              <button onClick={() => router.push('/board')} className="px-8 py-4 bg-white text-indigo-600 font-bold rounded-full hover:scale-105 transition-transform shadow-xl">
+                Go to Dashboard
+              </button>
+            ) : (
+              <button onClick={() => router.push('/register')} className="px-8 py-4 bg-white text-indigo-600 font-bold rounded-full hover:scale-105 transition-transform shadow-xl">
+                Create Free Account
+              </button>
+            )}
           </div>
         </motion.div>
       </section>

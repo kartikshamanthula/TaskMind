@@ -9,16 +9,17 @@ export const metadata = {
   keywords: ["task manager", "productivity", "kanban board", "workflow", "collaboration"],
   authors: [{ name: "Admin" }],
   creator: "Admin",
+  metadataBase: new URL('https://TaskMind-tw.vercel.app'),
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://dailytaskboard.com",
+    url: "https://TaskMind-tw.vercel.app",
     title: "TaskMind | AI-Powered Productivity",
     description: "A premium, secure task management application to streamline your daily workflow, collaborate with teams, and boost productivity.",
     siteName: "TaskMind",
     images: [
       {
-        url: '/meta-image.png',
+        url: '/kanban-mockup.png',
         width: 1200,
         height: 630,
         alt: 'TaskMind Preview',

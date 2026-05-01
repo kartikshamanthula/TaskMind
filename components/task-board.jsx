@@ -34,6 +34,106 @@ const BOARD_BACKGROUNDS = [
   { id: 'bg18', name: 'Dark Marble', url: 'https://images.unsplash.com/photo-1516550893923-42d28e5677af?auto=format&fit=crop&q=80&w=1000' },
   { id: 'bg19', name: 'Soft Gradient', url: 'https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&q=80&w=1000' },
   { id: 'bg20', name: 'Tech Grid', url: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1000' },
+  { id: 'bg120', name: 'Alejandro Escamilla', url: 'https://picsum.photos/id/0/3840/2160' },
+  { id: 'bg21', name: 'Alejandro Escamilla', url: 'https://picsum.photos/id/1/3840/2160' },
+  { id: 'bg22', name: 'Alejandro Escamilla', url: 'https://picsum.photos/id/2/3840/2160' },
+  { id: 'bg23', name: 'Alejandro Escamilla', url: 'https://picsum.photos/id/3/3840/2160' },
+  { id: 'bg24', name: 'Alejandro Escamilla', url: 'https://picsum.photos/id/4/3840/2160' },
+  { id: 'bg25', name: 'Alejandro Escamilla', url: 'https://picsum.photos/id/5/3840/2160' },
+  { id: 'bg26', name: 'Alejandro Escamilla', url: 'https://picsum.photos/id/6/3840/2160' },
+  { id: 'bg27', name: 'Alejandro Escamilla', url: 'https://picsum.photos/id/7/3840/2160' },
+  { id: 'bg28', name: 'Alejandro Escamilla', url: 'https://picsum.photos/id/8/3840/2160' },
+  { id: 'bg29', name: 'Alejandro Escamilla', url: 'https://picsum.photos/id/9/3840/2160' },
+  { id: 'bg30', name: 'Paul Jarvis', url: 'https://picsum.photos/id/10/3840/2160' },
+  { id: 'bg31', name: 'Paul Jarvis', url: 'https://picsum.photos/id/11/3840/2160' },
+  { id: 'bg32', name: 'Paul Jarvis', url: 'https://picsum.photos/id/12/3840/2160' },
+  { id: 'bg33', name: 'Paul Jarvis', url: 'https://picsum.photos/id/13/3840/2160' },
+  { id: 'bg34', name: 'Paul Jarvis', url: 'https://picsum.photos/id/14/3840/2160' },
+  { id: 'bg35', name: 'Paul Jarvis', url: 'https://picsum.photos/id/15/3840/2160' },
+  { id: 'bg36', name: 'Paul Jarvis', url: 'https://picsum.photos/id/16/3840/2160' },
+  { id: 'bg37', name: 'Paul Jarvis', url: 'https://picsum.photos/id/17/3840/2160' },
+  { id: 'bg38', name: 'Paul Jarvis', url: 'https://picsum.photos/id/18/3840/2160' },
+  { id: 'bg39', name: 'Paul Jarvis', url: 'https://picsum.photos/id/19/3840/2160' },
+  { id: 'bg40', name: 'Aleks Dorohovich', url: 'https://picsum.photos/id/20/3840/2160' },
+  { id: 'bg41', name: 'Alejandro Escamilla', url: 'https://picsum.photos/id/21/3840/2160' },
+  { id: 'bg42', name: 'Alejandro Escamilla', url: 'https://picsum.photos/id/22/3840/2160' },
+  { id: 'bg43', name: 'Alejandro Escamilla', url: 'https://picsum.photos/id/23/3840/2160' },
+  { id: 'bg44', name: 'Alejandro Escamilla', url: 'https://picsum.photos/id/24/3840/2160' },
+  { id: 'bg45', name: 'Alejandro Escamilla', url: 'https://picsum.photos/id/25/3840/2160' },
+  { id: 'bg46', name: 'Vadim Sherbakov', url: 'https://picsum.photos/id/26/3840/2160' },
+  { id: 'bg47', name: 'Yoni Kaplan-Nadel', url: 'https://picsum.photos/id/27/3840/2160' },
+  { id: 'bg48', name: 'Jerry Adney', url: 'https://picsum.photos/id/28/3840/2160' },
+  { id: 'bg49', name: 'Go Wild', url: 'https://picsum.photos/id/29/3840/2160' },
+  { id: 'bg50', name: 'Shyamanta Baruah', url: 'https://picsum.photos/id/30/3840/2160' },
+  { id: 'bg51', name: 'How-Soon Ngu', url: 'https://picsum.photos/id/31/3840/2160' },
+  { id: 'bg52', name: 'Rodrigo Melo', url: 'https://picsum.photos/id/32/3840/2160' },
+  { id: 'bg53', name: 'Alejandro Escamilla', url: 'https://picsum.photos/id/33/3840/2160' },
+  { id: 'bg54', name: 'Aleks Dorohovich', url: 'https://picsum.photos/id/34/3840/2160' },
+  { id: 'bg55', name: 'Shane Colella', url: 'https://picsum.photos/id/35/3840/2160' },
+  { id: 'bg56', name: 'Vadim Sherbakov', url: 'https://picsum.photos/id/36/3840/2160' },
+  { id: 'bg57', name: 'Austin Neill', url: 'https://picsum.photos/id/37/3840/2160' },
+  { id: 'bg58', name: 'Allyson Souza', url: 'https://picsum.photos/id/38/3840/2160' },
+  { id: 'bg59', name: 'Luke Chesser', url: 'https://picsum.photos/id/39/3840/2160' },
+  { id: 'bg60', name: 'Ryan Mcguire', url: 'https://picsum.photos/id/40/3840/2160' },
+  { id: 'bg61', name: 'Nithya Ramanujam', url: 'https://picsum.photos/id/41/3840/2160' },
+  { id: 'bg62', name: 'Luke Chesser', url: 'https://picsum.photos/id/42/3840/2160' },
+  { id: 'bg63', name: 'Oleg Chursin', url: 'https://picsum.photos/id/43/3840/2160' },
+  { id: 'bg64', name: 'Christopher Sardegna', url: 'https://picsum.photos/id/44/3840/2160' },
+  { id: 'bg65', name: 'Alan Haverty', url: 'https://picsum.photos/id/45/3840/2160' },
+  { id: 'bg66', name: 'Jeffrey Kam', url: 'https://picsum.photos/id/46/3840/2160' },
+  { id: 'bg67', name: 'Christopher Sardegna', url: 'https://picsum.photos/id/47/3840/2160' },
+  { id: 'bg68', name: 'Luke Chesser', url: 'https://picsum.photos/id/48/3840/2160' },
+  { id: 'bg69', name: 'Margaret Barley', url: 'https://picsum.photos/id/49/3840/2160' },
+  { id: 'bg70', name: 'Tyler Wanlass', url: 'https://picsum.photos/id/50/3840/2160' },
+  { id: 'bg71', name: 'Ireneuilia', url: 'https://picsum.photos/id/51/3840/2160' },
+  { id: 'bg72', name: 'Cierra', url: 'https://picsum.photos/id/52/3840/2160' },
+  { id: 'bg73', name: 'J Duclos', url: 'https://picsum.photos/id/53/3840/2160' },
+  { id: 'bg74', name: 'Nicholas Swanson', url: 'https://picsum.photos/id/54/3840/2160' },
+  { id: 'bg75', name: 'Tyler Wanlass', url: 'https://picsum.photos/id/55/3840/2160' },
+  { id: 'bg76', name: 'Sebastian Muller', url: 'https://picsum.photos/id/56/3840/2160' },
+  { id: 'bg77', name: 'Nicholas Swanson', url: 'https://picsum.photos/id/57/3840/2160' },
+  { id: 'bg78', name: 'Tony Naccarato', url: 'https://picsum.photos/id/58/3840/2160' },
+  { id: 'bg79', name: 'Art Wave', url: 'https://picsum.photos/id/59/3840/2160' },
+  { id: 'bg80', name: 'Vadim Sherbakov', url: 'https://picsum.photos/id/60/3840/2160' },
+  { id: 'bg81', name: 'Alex', url: 'https://picsum.photos/id/61/3840/2160' },
+  { id: 'bg82', name: 'Daniel Genser', url: 'https://picsum.photos/id/62/3840/2160' },
+  { id: 'bg83', name: 'Justin Leibow', url: 'https://picsum.photos/id/63/3840/2160' },
+  { id: 'bg84', name: 'Alexander Shustov', url: 'https://picsum.photos/id/64/3840/2160' },
+  { id: 'bg85', name: 'Alexander Shustov', url: 'https://picsum.photos/id/65/3840/2160' },
+  { id: 'bg86', name: 'Nicholas Swanson', url: 'https://picsum.photos/id/66/3840/2160' },
+  { id: 'bg87', name: 'Rula Sibai', url: 'https://picsum.photos/id/67/3840/2160' },
+  { id: 'bg88', name: 'Cristian Moscoso', url: 'https://picsum.photos/id/68/3840/2160' },
+  { id: 'bg89', name: 'Alexander Shustov', url: 'https://picsum.photos/id/69/3840/2160' },
+  { id: 'bg90', name: 'Dorothy Lin', url: 'https://picsum.photos/id/70/3840/2160' },
+  { id: 'bg91', name: 'Jon Eckert', url: 'https://picsum.photos/id/71/3840/2160' },
+  { id: 'bg92', name: 'Tyler Finck', url: 'https://picsum.photos/id/72/3840/2160' },
+  { id: 'bg93', name: 'Jon Eckert', url: 'https://picsum.photos/id/73/3840/2160' },
+  { id: 'bg94', name: 'Isaak Dury', url: 'https://picsum.photos/id/74/3840/2160' },
+  { id: 'bg95', name: 'Jassy Onyae', url: 'https://picsum.photos/id/75/3840/2160' },
+  { id: 'bg96', name: 'Alexander Shustov', url: 'https://picsum.photos/id/76/3840/2160' },
+  { id: 'bg97', name: 'May Pamintuan', url: 'https://picsum.photos/id/77/3840/2160' },
+  { id: 'bg98', name: 'Paul Evans', url: 'https://picsum.photos/id/78/3840/2160' },
+  { id: 'bg99', name: 'Dorothy Lin', url: 'https://picsum.photos/id/79/3840/2160' },
+  { id: 'bg100', name: 'Sonja Langford', url: 'https://picsum.photos/id/80/3840/2160' },
+  { id: 'bg101', name: 'Sander Weeteling', url: 'https://picsum.photos/id/81/3840/2160' },
+  { id: 'bg102', name: 'Rula Sibai', url: 'https://picsum.photos/id/82/3840/2160' },
+  { id: 'bg103', name: 'Julie Geiger', url: 'https://picsum.photos/id/83/3840/2160' },
+  { id: 'bg104', name: 'Johnny Lam', url: 'https://picsum.photos/id/84/3840/2160' },
+  { id: 'bg105', name: 'Gozha Net', url: 'https://picsum.photos/id/85/3840/2160' },
+  { id: 'bg106', name: 'Barcelona', url: 'https://picsum.photos/id/87/3840/2160' },
+  { id: 'bg107', name: 'Barcelona', url: 'https://picsum.photos/id/88/3840/2160' },
+  { id: 'bg108', name: 'Vectorbeast', url: 'https://picsum.photos/id/89/3840/2160' },
+  { id: 'bg109', name: 'Rula Sibai', url: 'https://picsum.photos/id/90/3840/2160' },
+  { id: 'bg110', name: 'Jennifer Trovato', url: 'https://picsum.photos/id/91/3840/2160' },
+  { id: 'bg111', name: 'Rafael Souza', url: 'https://picsum.photos/id/92/3840/2160' },
+  { id: 'bg112', name: 'Caroline Sada', url: 'https://picsum.photos/id/93/3840/2160' },
+  { id: 'bg113', name: 'Jean Kleisz', url: 'https://picsum.photos/id/94/3840/2160' },
+  { id: 'bg114', name: 'Kundan Ramisetti', url: 'https://picsum.photos/id/95/3840/2160' },
+  { id: 'bg115', name: 'Pawel Kadysz', url: 'https://picsum.photos/id/96/3840/2160' },
+  { id: 'bg116', name: 'Laurice Solomon', url: 'https://picsum.photos/id/98/3840/2160' },
+  { id: 'bg117', name: 'Jon Toney', url: 'https://picsum.photos/id/99/3840/2160' },
+  { id: 'bg118', name: 'Tina Rataj', url: 'https://picsum.photos/id/100/3840/2160' },
+  { id: 'bg119', name: 'Christian Bardenhorst', url: 'https://picsum.photos/id/101/3840/2160' },
 ];
 
 import { cn } from "@/lib/utils";
@@ -2110,9 +2210,60 @@ export function TaskBoard() {
         </div>
 
 
-        {/* Mobile-only user avatar */}
+        {/* Mobile-only user avatar & controls */}
         {user && (
           <div className="flex md:hidden items-center gap-2">
+            <div className="relative flex items-center">
+              <button
+                onClick={() => setShowBgSelector(!showBgSelector)}
+                className={cn("p-2 rounded-lg transition-all", showBgSelector ? "bg-muted text-foreground" : "hover:bg-muted text-muted-foreground hover:text-foreground")}
+                title="Change Background"
+              >
+                <Image size={18} />
+              </button>
+              {showBgSelector && (
+                <div className="absolute top-12 right-0 w-72 max-w-[90vw] bg-card border border-border shadow-2xl rounded-2xl p-4 z-50 overflow-hidden">
+                  <h4 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-3 flex items-center gap-2">
+                    <Image size={12} /> Board Background
+                  </h4>
+                  <div className="grid grid-cols-3 gap-2 max-h-80 overflow-y-auto pr-1 custom-scrollbar">
+                    {BOARD_BACKGROUNDS.map((bg) => (
+                      <button
+                        key={bg.id}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          fetch('/api/board', {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ boardId: activeBoardId, background: bg.url })
+                          }).then(res => res.json()).then(data => {
+                            if (data.board) {
+                              setBoards(prev => prev.map(b => b._id === activeBoardId ? data.board : b));
+                              setActiveBoard(data.board);
+                              toast.success(`Background updated to ${bg.name}`);
+                            }
+                          });
+                          setShowBgSelector(false);
+                        }}
+                        className={cn(
+                          "group relative aspect-video rounded-lg overflow-hidden border-2 transition-all hover:scale-105",
+                          activeBoard?.background === bg.url ? "border-primary shadow-md" : "border-transparent hover:border-primary/50"
+                        )}
+                      >
+                        {bg.url ? (
+                          <img src={bg.url} alt={bg.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full bg-muted flex items-center justify-center text-[10px] text-muted-foreground font-bold">Default</div>
+                        )}
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-1.5">
+                          <span className="text-[8px] text-white font-bold truncate">{bg.name}</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
             <button onClick={() => {
               document.documentElement.classList.toggle('dark');
               localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
@@ -2889,7 +3040,7 @@ export function TaskBoard() {
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", damping: 20, stiffness: 100, delay: 0.5 }}
-        className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 px-2 py-2 bg-white/10 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center gap-1"
+        className="fixed bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 z-50 px-2 py-2 bg-slate-100/80 dark:bg-black/40 backdrop-blur-2xl border border-black/10 dark:border-white/10 rounded-full shadow-2xl flex items-center gap-1"
       >
         {[
           { id: 'board', label: 'Board', icon: KanbanSquare },
@@ -2905,7 +3056,7 @@ export function TaskBoard() {
               onClick={() => setActiveView(item.id)}
               className={cn(
                 "relative flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-black transition-all group",
-                isActive ? "text-white" : "text-white/50 hover:text-white/80"
+                isActive ? "text-white" : "text-slate-600 hover:text-slate-900 dark:text-white/50 dark:hover:text-white/80"
               )}
             >
               {isActive && (

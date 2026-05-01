@@ -43,23 +43,30 @@ export async function POST(request) {
     const mimeType = matches[1];
     const base64Data = matches[2];
 
-    const prompt = `You are a specialized OCR and data extraction AI. 
-    Analyze the provided image of a bill or receipt and extract:
-    1. Title: A short descriptive name (e.g., "Electricity Bill Jan").
-    2. Amount: The total amount due (number only).
-    3. Due Date: The deadline for payment (YYYY-MM-DD format).
-    4. Merchant: The name of the company.
-    5. Category: One of (Finance, Utilities, Shopping, Health, Food, Transport).
+    const prompt = `You are a fast, intelligent image analysis AI. 
+    Analyze the provided image and extract information based on its type.
+    Is it a financial document (bill, receipt), a general text document (notes, letter), or a general photo/image?
+    
+    Extract the following details:
+    1. Title: A concise, descriptive name summarizing the image (e.g., "Grocery Receipt", "Meeting Notes", "Nature Photo").
+    2. Category: Determine the best category (Finance, Work, Personal, Health, Shopping, Utilities, etc).
+    3. Note: A short description of the image content or transcribed text.
 
-    Return ONLY a JSON object in this exact format without any markdown wrappers:
+    If it is clearly a financial document (bill, receipt, invoice), ALSO extract:
+    4. Amount: The total amount (number only, or null).
+    5. Due Date: The deadline or date (YYYY-MM-DD format, or null).
+    6. Merchant: The name of the company/store (string, or null).
+
+    Return ONLY a JSON object in this exact format without markdown wrappers:
     {
       "title": "extracted title",
+      "category": "Finance",
+      "note": "Description or transcribed text",
       "amount": 100.50,
       "dueDate": "2024-05-30",
-      "merchant": "merchant name",
-      "category": "Finance"
+      "merchant": "merchant name"
     }
-    `;
+    Make sure to use null for amount, dueDate, and merchant if the image is NOT a financial document.`;
 
     const model = genAI.getGenerativeModel({
       model: "gemini-flash-latest",
@@ -78,12 +85,20 @@ export async function POST(request) {
       }
     ]);
 
-    const content = result.response.text();
-    const extractedData = JSON.parse(content);
-
-    return NextResponse.json(extractedData);
+    let content = result.response.text();
+    
+    // Clean up markdown wrapping if present despite instructions
+    content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    
+    try {
+      const extractedData = JSON.parse(content);
+      return NextResponse.json(extractedData);
+    } catch (parseError) {
+      console.error("Failed to parse JSON:", content);
+      return NextResponse.json({ error: `AI returned invalid JSON: ${content}` }, { status: 500 });
+    }
   } catch (error) {
     console.error("AI OCR Error:", error);
-    return NextResponse.json({ error: "Failed to process image with Gemini" }, { status: 500 });
+    return NextResponse.json({ error: `AI Error: ${error.message}` }, { status: 500 });
   }
 }

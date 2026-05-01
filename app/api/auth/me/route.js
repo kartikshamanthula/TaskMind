@@ -26,6 +26,8 @@ export async function GET() {
         name: user.name, 
         email: user.email, 
         role: user.role,
+        xp: user.xp || 0,
+        level: user.level || 1,
         permissions: user.permissions || {
           canUseAI: true,
           canAccessBoard: true,
