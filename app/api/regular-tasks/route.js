@@ -6,36 +6,48 @@ import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 
 const getUser = async () => {
-  const token = (await cookies()).get('token')?.value;
-  if (!token) return null;
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('token')?.value;
+    if (!token) return null;
+    
+    if (!process.env.JWT_SECRET) {
+      console.error('JWT_SECRET is not defined');
+      return null;
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     return decoded;
   } catch (e) {
+    console.error('Auth error:', e.message);
     return null;
   }
 };
 
 export async function GET(request) {
-  await dbConnect();
   try {
+    await dbConnect();
     const user = await getUser();
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!user || !user.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const tasks = await RegularTask.find({ userId: user.id }).sort({ order: 1, createdAt: -1 });
     return NextResponse.json({ tasks }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error('GET Regular Tasks Error:', error);
+    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
   }
 }
 
 export async function POST(request) {
-  await dbConnect();
   try {
+    await dbConnect();
     const user = await getUser();
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!user || !user.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const data = await request.json();
+    if (!data || !data.title) {
+      return NextResponse.json({ error: 'Title is required' }, { status: 400 });
+    }
     
     const taskData = {
       ...data,
@@ -45,15 +57,16 @@ export async function POST(request) {
     const task = await RegularTask.create(taskData);
     return NextResponse.json({ task }, { status: 201 });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error('POST Regular Task Error:', error);
+    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
   }
 }
 
 export async function PUT(request) {
-  await dbConnect();
   try {
+    await dbConnect();
     const user = await getUser();
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!user || !user.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const data = await request.json();
     const { id, ...updates } = data;
@@ -110,15 +123,16 @@ export async function PUT(request) {
 
     return NextResponse.json({ task, xpGained, user: newUserData }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error('PUT Regular Task Error:', error);
+    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
   }
 }
 
 export async function DELETE(request) {
-  await dbConnect();
   try {
+    await dbConnect();
     const user = await getUser();
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!user || !user.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
@@ -131,6 +145,7 @@ export async function DELETE(request) {
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error('DELETE Regular Task Error:', error);
+    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
   }
 }
