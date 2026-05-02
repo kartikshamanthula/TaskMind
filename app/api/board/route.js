@@ -38,7 +38,7 @@ export async function GET(request) {
         { members: userEmail }
       ]
     }).toArray();
-    console.log(`Found ${boards.length} boards for user ${userEmail}`);
+    // console.log(`Found ${boards.length} boards for user`);
 
     // --- MIGRATION: Convert string-based members to object-based members ---
     for (const board of boards) {
@@ -130,7 +130,7 @@ export async function GET(request) {
     const cleanActiveBoard = { ...activeBoard, _id: activeBoardId };
     delete cleanActiveBoard.__v;
 
-    console.log(`GET /api/board success for user ${userEmail}`);
+    // console.log(`GET /api/board success`);
     return NextResponse.json({ boards: cleanBoards, activeBoard: cleanActiveBoard, tasks });
   } catch (error) {
     console.error("GET /api/board CRASH:", error);
