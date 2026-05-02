@@ -13,10 +13,7 @@ const verifyAdmin = async () => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.id);
     if (!user || user.role !== 'admin') {
-      console.log('--- ADMIN SECURITY LOG ---');
-      console.log('User Email:', user?.email);
-      console.log('User Role:', user?.role);
-      console.log('--- END LOG ---');
+      // Admin authorization failed - user exists but lacks admin role
       return null;
     }
     return user;
